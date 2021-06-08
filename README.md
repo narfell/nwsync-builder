@@ -9,5 +9,5 @@ docker run --rm -w /manifests -v $(pwd):/manifests narfell/nwsync-manifest-build
 ## Building
 
 ```bash
-docker build --rm .
+./build.sh
 ```
