@@ -1,11 +1,11 @@
-FROM nimlang/nim:alpine
+FROM ubuntu:20.04
 
-RUN apk --no-cache add curl unzip pcre \
-  && curl -LJO https://github.com/Beamdog/nwsync/archive/0.2.6.zip \
-  && unzip nwsync-0.2.6.zip \
-  && rm nwsync-0.2.6.zip \
-  && cd nwsync-0.2.6 \
-  && nimble install -y \
-  && cd -
+ARG NWSYNC_VERSION
+ENV DOWNLOAD="nwsync.linux.amd64"
 
-ENV PATH="/nwsync-0.2.6/bin:${PATH}"
+RUN echo $NWSYNC_VERSION $DOWNLOAD \
+  && apt-get update && apt-get -y install curl unzip \
+  && curl -LJO "https://github.com/Beamdog/nwsync/releases/download/$NWSYNC_VERSION/$DOWNLOAD.zip" \
+  && unzip "$DOWNLOAD.zip" \
+  && rm "$DOWNLOAD.zip" \
+  && mv nwsync_* /usr/local/bin
